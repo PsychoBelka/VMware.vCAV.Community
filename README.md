@@ -7,7 +7,7 @@ PowerShell modules to expose functions to manage VMWare vCloud Availability via 
 Adrian Begg (@AdrianBegg)
 
 ## Documentation
-All of the cmdlets in the module should have well described PowerShell help available. For a list of cmdlets available use the `Get-Command *vCAV*` command after the module has been imported or installed. For detailed help including examples please use `Get-help <cmdlet> -Detailed` (e.g. `Get-help Get-vCAVReplications -Detailed`). Please find several examples under the examples folder. If you have any questions about usage please don't hesitate to contact me on Twitter.
+All of the cmdlets in the module should have well described PowerShell help available. For a list of cmdlets available use the `Get-Command *vCAV*` command after the module has been imported or installed. For detailed help including examples please use `Get-help <cmdlet> -Detailed` (e.g. `Get-help Get-vCAVReplications -Detailed`). If you have any questions about usage please don't hesitate to contact me on Twitter or the VCPP/vExpert/VMWare Code Slack.
 
 ## Use Cases (Provider)
 * Automate build up vCAV deployments from code
@@ -23,5 +23,22 @@ All of the cmdlets in the module should have well described PowerShell help avai
 
 ## Tested Versions
 * PowerShell Core: 6.2.0
-* PowerCLI:
+* PowerCLI: 11.4.0.14413515
 * vCloud Availability: 3.0.1, 3.0.2, 3.0.3, 3.5 (Beta)
+
+## Known Issues
+**Cmdlet**: Get-vCAVSupportBundle
+**Version**: vCAV 3.5 BETA
+**Issue**: When -Download $true is provided in vCAV 3.5 BETA an API Exception is thrown (API Version needs to be "3" does not support API version 4)
+**Workaround**: Set API Version to 3 before running the cmdlet   ($DefaultvCAVServer.DefaultAPIVersion = 3)
+**Fix**: Expect to be fixed in GA Release
+
+## Current Development backlog:
+### General
+* Code quality, lots of copy and paste between functions, the module has been written as functions have been required to fulfil immediate needs as they arise; needs a good clean review of everything, lots of opportunities for re-use and simplification
+* User Functions (Replication Management) are very under developed and limited at present. Much more work is required on these cmdlets particularly for on-premises Replication Management.
+### Invoke-vCAVAPIRequest
+* Proxy handling at the moment is horrible due to incompatibility of [System.Net.WebProxy]::GetDefaultProxy() in PowerShell Core which is my main development platform
+### Install-vCAVCertificate
+* Not using the standard Invoke-vCAVAPIRequest at the moment, should use common API handler
+
