@@ -6,6 +6,18 @@ PowerShell modules to expose functions to manage VMWare vCloud Availability via 
 ## Project Owner
 Adrian Begg (@AdrianBegg)
 
+## Installation/Quick Start
+Install VMware.vCAV.Community module from the PowerShell Gallery:
+```
+Install-Module -Name VMware.vCAV.Community -Scope CurrentUser
+Import-Module VMware.vCAV.Community
+```
+Connect to the vCloud Availability Service using a supported authentication method
+```
+Connect-vCAVService -Server "vcav.pigeonnnuggets.com" -AuthProvider vCDLogin
+```
+After that your pretty much ready to roll.
+
 ## Documentation
 All of the cmdlets in the module should have well described PowerShell help available. For a list of cmdlets available use the `Get-Command *vCAV*` command after the module has been imported or installed. For detailed help including examples please use `Get-help <cmdlet> -Detailed` (e.g. `Get-help Get-vCAVReplications -Detailed`). If you have any questions about usage please don't hesitate to contact me on Twitter or the VCPP/vExpert/VMWare Code Slack.
 
