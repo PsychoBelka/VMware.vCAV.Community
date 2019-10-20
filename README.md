@@ -27,11 +27,11 @@ All of the cmdlets in the module should have well described PowerShell help avai
 * vCloud Availability: 3.0.1, 3.0.2, 3.0.3, 3.5 (Beta)
 
 ## Known Issues
-**Cmdlet**: Get-vCAVSupportBundle
-**Version**: vCAV 3.5 BETA
-**Issue**: When -Download $true is provided in vCAV 3.5 BETA an API Exception is thrown (API Version needs to be "3" does not support API version 4)
-**Workaround**: Set API Version to 3 before running the cmdlet   ($DefaultvCAVServer.DefaultAPIVersion = 3)
-**Fix**: Expect to be fixed in GA Release
+**Cmdlet**: Get-vCAVSupportBundle  
+**Version**: vCAV 3.5 BETA  
+**Issue**: When -Download $true is provided in vCAV 3.5 BETA an API Exception is thrown (API Version needs to be "3" does not support API version 4)  
+**Workaround**: Set API Version to 3 before running the cmdlet   ($DefaultvCAVServer.DefaultAPIVersion = 3)  
+**Fix**: Expect to be fixed in GA Release  
 
 ## Current Development backlog:
 ### General
