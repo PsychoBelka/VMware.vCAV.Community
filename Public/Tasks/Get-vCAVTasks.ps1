@@ -17,6 +17,7 @@ function Get-vCAVTasks(){
 
     .PARAMETER Site
     Optionally the Site to retrieve the task from. This could be a local or remote site.
+    Default: Local site
 
     .PARAMETER SourceOrg
     Filter tasks by the Source vOrg
@@ -73,7 +74,7 @@ function Get-vCAVTasks(){
         [Parameter(Mandatory=$False)]
             [switch] $Replications,
             [switch] $System,
-            [ValidateNotNullorEmpty()] [String] $Site,
+            [ValidateNotNullorEmpty()] [String] $Site = ((Get-vCAVSites -SiteType "Local").site),
             [ValidateNotNullorEmpty()] [String] $DestinationOrg,
             [ValidateNotNullorEmpty()] [String] $SourceOrg,
             [ValidateNotNullorEmpty()] [String] $User,
@@ -95,13 +96,11 @@ function Get-vCAVTasks(){
             limit = 100
         }
         # If a Site has been provided check that the site exists and add to the query parameter
-        if($PSBoundParameters.ContainsKey("Site")){
-            [bool] $SiteExists = ($null -ne (Get-vCAVSites -SiteName $Site))
-            if($SiteExists){
-                $QueryFilters.Add("site", $Site)
-            } else {
-                throw "The provided site does not exist in this installation. Please check the site name and try again."
-            }
+        [bool] $SiteExists = ($null -ne (Get-vCAVSites -SiteName $Site))
+        if($SiteExists){
+            $QueryFilters.Add("site", $Site)
+        } else {
+            throw "The provided site does not exist in this installation. Please check the site name and try again."
         }
         if($PSBoundParameters.ContainsKey("Replications")){
             # Add the Replications Filters
