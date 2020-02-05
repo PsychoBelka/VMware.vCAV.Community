@@ -90,7 +90,7 @@ function Invoke-vCAVAPIRequest(){
     } elseif($APIVersion -eq 3){
         $APIHeaders.Add('Accept','application/vnd.vmware.h4-v3+json')
     } elseif($APIVersion -eq 4){
-        $APIHeaders.Add('Accept','application/vnd.vmware.h4-v4+json')
+        $APIHeaders.Add('Accept','application/vnd.vmware.h4-v3.5+json')
     }
     # Add an Operation Id for Tracking Transactions in logs
     $APIHeaders.Add('operationID',("Powershell__$(New-Guid)"))
