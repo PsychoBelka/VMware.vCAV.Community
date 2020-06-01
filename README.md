@@ -34,9 +34,9 @@ All of the cmdlets in the module should have well described PowerShell help avai
 * Integration with orchestration tools to build runbooks for failover or testing
 
 ## Tested Versions
-* PowerShell Core: 6.2.0
+* PowerShell Core: 6.2.0, 7.0.0
 * PowerCLI: 11.4.0.14413515
-* vCloud Availability: 3.0.1, 3.0.2, 3.0.3, 3.5 (Beta)
+* vCloud Availability: 3.0.1, 3.0.2, 3.0.3, 3.5.0, 3.5.1
 
 ## Known Issues
 **Cmdlet**: Get-vCAVSupportBundle  
