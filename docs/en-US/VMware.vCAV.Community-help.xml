@@ -244,18 +244,6 @@
           <dev:defaultValue>[System.Management.Automation.PSCredential]::Empty</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>APIVersion</maml:name>
-          <maml:Description>
-            <maml:para>The API Version to use for the connection. Default is Version 3. (vCloud Availability 3.0.X) During connection if a higher version of the API detected as supported it will be used.</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>3</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>CredentialStoreFile</maml:name>
           <maml:Description>
             <maml:para>File path to store or read the connection properties.</maml:para>
@@ -394,18 +382,6 @@
           </dev:type>
           <dev:defaultValue>[System.Management.Automation.PSCredential]::Empty</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>APIVersion</maml:name>
-          <maml:Description>
-            <maml:para>The API Version to use for the connection. Default is Version 3. (vCloud Availability 3.0.X) During connection if a higher version of the API detected as supported it will be used.</maml:para>
-          </maml:Description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>3</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -492,18 +468,6 @@
           <maml:uri />
         </dev:type>
         <dev:defaultValue>[System.Management.Automation.PSCredential]::Empty</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>APIVersion</maml:name>
-        <maml:Description>
-          <maml:para>The API Version to use for the connection. Default is Version 3. (vCloud Availability 3.0.X) During connection if a higher version of the API detected as supported it will be used.</maml:para>
-        </maml:Description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>3</dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Site</maml:name>

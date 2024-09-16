@@ -346,7 +346,6 @@ function Invoke-vCAVReplicationOperation(){
             $APICallParamters = @{
                 URI = $URI
                 Method = $OperationMethod
-                APIVersion = $DefaultvCAVServer.DefaultAPIVersion
             }
             # Now check if we are sending any data
             if($Payload.Length -ne 0){

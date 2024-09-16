@@ -80,13 +80,6 @@ function Get-vCAVTrafficReport(){
             [switch]$Realtime
     )
 
-    # Check API/Version compatibility for this cmdlet
-    if($DefaultvCAVServer.DefaultAPIVersion -lt "4"){
-        throw "This cmdlet is only supported on vCloud Availability API version 4 or higher. The current default API version is $($DefaultvCAVServer.DefaultAPIVersion)"
-    }
-    if($DefaultvCAVServer.buildVersion -lt "3.5"){
-        throw "This cmdlet is only supported on vCloud Availability 3.5+. The current connected version is $($DefaultvCAVServer.buildVersion)"
-    }
     # Check the parameter set to determine the URI and Filters
     if ($PSCmdlet.ParameterSetName -eq "VMRealTime"){
         # Check if the VM Replication Exists
