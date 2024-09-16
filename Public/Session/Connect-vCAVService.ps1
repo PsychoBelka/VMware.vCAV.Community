@@ -28,10 +28,6 @@ function Connect-vCAVService(){
     .PARAMETER Credentials
     Specifies a PSCredential object that contains credentials for authenticating with the server.
 
-    .PARAMETER APIVersion
-    The API Version to use for the connection. Default is Version 3. (vCloud Availability 3.0.X)
-    During connection if a higher version of the API detected as supported it will be used.
-
     .PARAMETER Extend
     Indicates that the session should be extended with a connection to the specified remote vCloud Availability site.
 
@@ -108,9 +104,6 @@ function Connect-vCAVService(){
         [Parameter(Mandatory=$False, ParameterSetName="SaveCredentials")]
         [Parameter(Mandatory=$False, ParameterSetName="Extend")]
             [PSCredential] $Credentials = [System.Management.Automation.PSCredential]::Empty,
-        [Parameter(Mandatory=$False, ParameterSetName="Standard")]
-        [Parameter(Mandatory=$False, ParameterSetName="SaveCredentials")]
-            [ValidateSet(1,2,3,4)] [int] $APIVersion=3,
         [Parameter(Mandatory=$True, ParameterSetName="Extend")]
             [ValidateNotNullorEmpty()] [string] $Site,
         [Parameter(Mandatory=$True, ParameterSetName="UseSaved")]
@@ -140,7 +133,6 @@ function Connect-vCAVService(){
         [string] $Server = $JSONvCAVCreds.Server
         [int] $Port = $JSONvCAVCreds.Port
         [string] $AuthProvider = $JSONvCAVCreds.AuthProvider
-        [int] $APIVersion = $JSONvCAVCreds.APIVersion
     }
     # Next we need to check if a Parameter for Credentials was provided; this needs to be done here instead of during parameter checking for UseSavedCredentials not to prompt
     if($Credentials -eq [System.Management.Automation.PSCredential]::Empty) {
@@ -154,7 +146,6 @@ function Connect-vCAVService(){
         $objAuthCache | Add-Member Note* AuthProvider $AuthProvider
         $objAuthCache | Add-Member Note* Username $Credentials.UserName
         $objAuthCache | Add-Member Note* EncyptedPassword ($Credentials.GetNetworkCredential().Password | ConvertTo-SecureString -AsPlainText -Force | ConvertFrom-SecureString)
-        $objAuthCache | Add-Member Note* APIVersion $APIVersion
 
         # Check if a credential file has been specified
         if($PSBoundParameters.ContainsKey("CredentialStoreFile")){
@@ -235,7 +226,7 @@ function Connect-vCAVService(){
             }
         }
         # Now make the call to the Logon Service; if no exception is thrown store the session details.
-        $JSONAuthRequest = Invoke-vCAVAPIRequest -URI $AuthURI -Data (ConvertTo-JSON $objAuthPayload) -Method Post -APIVersion $APIVersion -CheckConnection $false
+        $JSONAuthRequest = Invoke-vCAVAPIRequest -URI $AuthURI -Data (ConvertTo-JSON $objAuthPayload) -Method Post -CheckConnection $false
         $objAuthData = $JSONAuthRequest.JSONData
         $objvCAVService = New-Object System.Management.Automation.PSObject
         $objvCAVService | Add-Member Note* Name $Server
@@ -247,7 +238,6 @@ function Connect-vCAVService(){
         $objvCAVService | Add-Member Note* Roles $objAuthData.roles
         $objvCAVService | Add-Member Note* User $objAuthData.user
         $objvCAVService | Add-Member Note* AuthenticatedSites $objAuthData.authenticatedSites
-        $objvCAVService | Add-Member Note* DefaultAPIVersion $APIVersion
         $objvCAVService | Add-Member Note* serviceType ""
         $objvCAVService | Add-Member Note* productName ""
         $objvCAVService | Add-Member Note* buildVersion ""
@@ -257,7 +247,7 @@ function Connect-vCAVService(){
         # Next make a call to get version infomration for the endpoint; we need to check the API version first by examining the header from the Auth request
         [string] $AboutURI = $Global:DefaultvCAVServer.ServiceURI + "diagnostics/about"
         try{
-            $JSONAboutRequest = Invoke-vCAVAPIRequest -URI $AboutURI -Method Get  -CheckConnection $false
+            $JSONAboutRequest = Invoke-vCAVAPIRequest -URI $AboutURI -Method Get -CheckConnection $false
             $DefaultvCAVServer.serviceType = $JSONAboutRequest.JSONData.serviceType
             $DefaultvCAVServer.productName = $JSONAboutRequest.JSONData.productName
             $DefaultvCAVServer.buildVersion = $JSONAboutRequest.JSONData.buildVersion
@@ -266,10 +256,6 @@ function Connect-vCAVService(){
             # If an exception is thrown clear the connection
             Set-Variable -Name "DefaultvCAVServer" -Value $null -Scope Global
             throw "An error occured during the connection; check the API Version provided is correct and try again. $($_)"
-        }
-        # Finally check the highest version of the API is being used for newer version of the product
-        if($DefaultvCAVServer.buildVersion -ge "3.5"){
-            $DefaultvCAVServer.DefaultAPIVersion = 4
         }
     }
 }

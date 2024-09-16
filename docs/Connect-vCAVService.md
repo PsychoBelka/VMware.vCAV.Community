@@ -14,14 +14,13 @@ This cmdlet establishes a connection to the specified vCloud Availability server
 
 ### Standard (Default)
 ```
-Connect-vCAVService -Server <String> [-AuthProvider <String>] [-Port <Int32>] [-Credentials <PSCredential>]
- [-APIVersion <Int32>] [<CommonParameters>]
+Connect-vCAVService -Server <String> [-AuthProvider <String>] [-Port <Int32>] [-Credentials <PSCredential>] [<CommonParameters>]
 ```
 
 ### SaveCredentials
 ```
 Connect-vCAVService [-SaveCredentials] -Server <String> [-AuthProvider <String>] [-Port <Int32>]
- [-Credentials <PSCredential>] [-APIVersion <Int32>] [-CredentialStoreFile <String>] [<CommonParameters>]
+ [-Credentials <PSCredential>] [-CredentialStoreFile <String>] [<CommonParameters>]
 ```
 
 ### UseSaved
@@ -227,24 +226,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: [System.Management.Automation.PSCredential]::Empty
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -APIVersion
-The API Version to use for the connection.
-Default is Version 3.
-(vCloud Availability 3.0.X)
-During connection if a higher version of the API detected as supported it will be used.
-
-```yaml
-Type: Int32
-Parameter Sets: Standard, SaveCredentials
-Aliases:
-
-Required: False
-Position: Named
-Default value: 3
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
