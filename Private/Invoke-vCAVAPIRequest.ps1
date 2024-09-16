@@ -67,7 +67,7 @@ function Invoke-vCAVAPIRequest(){
         [string] $Data,
         
         [Parameter()]
-        [switch] $CheckConnection = $true,
+        [bool] $CheckConnection = $true,
         
         [Parameter()]
         [Hashtable] $Headers,
@@ -107,8 +107,8 @@ function Invoke-vCAVAPIRequest(){
         Headers = $APIHeaders
     }
     # Next check the PowerCLI Proxy policy to determine if what Proxy Policy should be used for the API call and set accordingly
-    if((Get-PowerCLIConfiguration -Scope "User" | Select-Object ProxyPolicy).ProxyPolicy -eq "NoProxy") {
-        $HashInvokeArguments.Add("NoProxy",$true)
+    if(((Get-PowerCLIConfiguration -Scope "User" | Select-Object ProxyPolicy).ProxyPolicy -eq "NoProxy") -and ($Global:PSEdition -eq "Core")){
+            $HashInvokeArguments.Add("NoProxy",$true)
     } elseif((Get-PowerCLIConfiguration -Scope "User" | Select-Object ProxyPolicy).ProxyPolicy -eq "UseSystemProxy") {
         # Check the PowerShell edition first
         if($Global:PSEdition -eq "Desktop"){
@@ -124,12 +124,13 @@ function Invoke-vCAVAPIRequest(){
                 $HashInvokeArguments.Add("Proxy",$ProxyString)
                 $HashInvokeArguments.Add("ProxyUseDefaultCredentials",$true)
             }
+            # Check if the Certificate Check should be performed and add the argument if not
+            if((Get-PowerCLIConfiguration -Scope "User" | Select-Object InvalidCertificateAction).InvalidCertificateAction -eq "Ignore") {
+                $HashInvokeArguments.Add("SkipCertificateCheck",$true)
+            }
         }
     }
-    # Check if the Certificate Check should be performed and add the argument if not
-    if((Get-PowerCLIConfiguration -Scope "User" | Select-Object InvalidCertificateAction).InvalidCertificateAction -eq "Ignore") {
-        $HashInvokeArguments.Add("SkipCertificateCheck",$true)
-    }
+
     # Check first if the method is a GET, if it is check if the a set of QueryParameters has been provided and set as the body, else if anything else then Body should be set as the $Data
     if(($Method -eq "Get") -and ($PSBoundParameters.ContainsKey("QueryParameters"))){
         $HashInvokeArguments.Add("Body", $QueryParameters)
@@ -138,12 +139,19 @@ function Invoke-vCAVAPIRequest(){
     }
     # Now try and make the API call
     try{
-        $Request = Invoke-WebRequest @HashInvokeArguments
+        $Request = Invoke-WebRequest @HashInvokeArguments -UseBasicParsing
         $objResponse = New-Object System.Management.Automation.PSObject
         $objResponse | Add-Member Note* Headers $Request.Headers
         if($null -ne $Request.Content){
             try{
-                $objResponse | Add-Member Note* JSONData (ConvertFrom-JSON ([System.Text.Encoding]::UTF8.GetString($Request.Content)))
+                try{
+                    #When content is byte array
+                    $objResponse | Add-Member Note* JSONData (ConvertFrom-JSON ([System.Text.Encoding]::UTF8.GetString($Request.Content)))
+                } catch{
+                    #When content is JSON
+                    $objResponse | Add-Member Note* JSONData ($Request.Content | ConvertFrom-JSON)
+                }
+                
             } catch {
                 # For non-JSON payloads
                 $objResponse | Add-Member Note* RawData $Request.Content
