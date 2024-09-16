@@ -11,11 +11,11 @@ function Invoke-vCAVServicesReboot(){
     Issues a systemctl restart to the vCloud Availability Services running on the connected vCloud Availability service.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2018-12-24
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     [string] $URI = $global:DefaultvCAVServer.ServiceURI + "os/reboot-services"
-    $RebootResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RebootResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Post).JSONData
     $RebootResponse
 }

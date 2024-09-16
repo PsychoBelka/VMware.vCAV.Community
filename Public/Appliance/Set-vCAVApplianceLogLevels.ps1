@@ -19,8 +19,8 @@ function Set-vCAVApplianceLogLevels(){
     Sets the vCloud Availability REST API Client log level to TRACE.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-18
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     Param(
@@ -35,6 +35,6 @@ function Set-vCAVApplianceLogLevels(){
     $objLoggerSetting | Add-Member Note* level $LogLevel
     # Perform a PUT against the API
     $URI = $global:DefaultvCAVServer.ServiceURI + "diagnostics/loglevels"
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objLoggerSetting) -Method Put -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objLoggerSetting) -Method Put).JSONData
     $RequestResponse
 }

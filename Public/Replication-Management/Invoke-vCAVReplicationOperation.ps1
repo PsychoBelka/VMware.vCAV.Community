@@ -105,8 +105,8 @@ function Invoke-vCAVReplicationOperation(){
     Performs a Test Failover of the vApp with the REplication Id C4VAPP-9d4b1ae0-1ea8-4777-94c8-32e02d958998 and connects the failed over machine to the OrgVDCNetwork CustomerNetwork1. The machines will be Powered On after the Test Failover and a Sync will not be performed before the test.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-10-19
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     [CmdletBinding(DefaultParameterSetName="Default")]

@@ -63,8 +63,8 @@ function Get-vCAVTasks(){
     Get all tasks for the last 24 hours that failed  for the connected vCloud Availability Service.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-19
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 4.0
     #>
     [CmdletBinding(DefaultParameterSetName="Default")]
@@ -88,7 +88,7 @@ function Get-vCAVTasks(){
     # Check if query is for single task
     if ($PSCmdlet.ParameterSetName -eq "ById") {
         $TasksURI += "/$id"
-        (Invoke-vCAVAPIRequest -URI $TasksURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+        (Invoke-vCAVAPIRequest -URI $TasksURI -Method Get ).JSONData
     } else {
         #Create a Hashtable with the base filters
         [HashTable]$QueryFilters = @{
@@ -137,13 +137,13 @@ function Get-vCAVTasks(){
         }
         # All filters have been applied now make the call to get the items
         # Now make the first call to the API and add the items to a collection
-        $TaskQueryResponse = (Invoke-vCAVAPIRequest -URI $TasksURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+        $TaskQueryResponse = (Invoke-vCAVAPIRequest -URI $TasksURI -Method Get  -QueryParameters $QueryFilters).JSONData
         $colTasks = $TaskQueryResponse.items
         # Check if more then 100 results were returned and continue to query until all items have been returned
         [int] $OffsetPosition = 100 # Set the starting offset to 100 results
         while($OffsetPosition -lt $TaskQueryResponse.total){
             $QueryFilters.offset = $OffsetPosition
-            $TaskQueryResponse = (Invoke-vCAVAPIRequest -URI $TasksURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+            $TaskQueryResponse = (Invoke-vCAVAPIRequest -URI $TasksURI -Method Get  -QueryParameters $QueryFilters).JSONData
             $colTasks += $TaskQueryResponse.items
             $OffsetPosition += 100
         }

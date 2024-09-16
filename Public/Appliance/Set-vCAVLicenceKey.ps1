@@ -14,8 +14,8 @@ function Set-vCAVLicenceKey(){
     Sets the vCloud Availability licence key to "AAAA-BBBB-CCCCC-EEEEE-FFFFF-11111"
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-02-13
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 3.0
     #>
     Param(
@@ -25,6 +25,6 @@ function Set-vCAVLicenceKey(){
     $URI = $global:DefaultvCAVServer.ServiceURI + "license"
     $objLicenseKey = New-Object System.Management.Automation.PSObject
     $objLicenseKey | Add-Member Note* key $Key
-    $RequestResponse = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objLicenseKey) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion
+    $RequestResponse = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objLicenseKey) -Method Post
     $RequestResponse.JSONData
 }

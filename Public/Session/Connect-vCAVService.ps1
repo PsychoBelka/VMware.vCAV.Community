@@ -82,8 +82,8 @@ function Connect-vCAVService(){
     .NOTES
     This cmdlet does not currently support the SAML authentication method.
 
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-10
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 4.0
     #>
     [CmdletBinding(DefaultParameterSetName="Standard")]
@@ -195,7 +195,7 @@ function Connect-vCAVService(){
                 throw "The provided AuthProvider is not valid for session extention. Only the vCDLogin and vCDSession methods are supported with this option."
             }
             # Make the API call to extend the session and update the Global
-            $JSONExtendRequest = (Invoke-vCAVAPIRequest -URI $AuthURI -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion -Data (ConvertTo-JSON $objAuthPayload)).JSONData
+            $JSONExtendRequest = (Invoke-vCAVAPIRequest -URI $AuthURI -Method Post  -Data (ConvertTo-JSON $objAuthPayload)).JSONData
             $DefaultvCAVServer.Roles = $JSONExtendRequest.roles
             $DefaultvCAVServer.User = $JSONExtendRequest.user
             $DefaultvCAVServer.AuthenticatedSites = $JSONExtendRequest.authenticatedSites
@@ -257,7 +257,7 @@ function Connect-vCAVService(){
         # Next make a call to get version infomration for the endpoint; we need to check the API version first by examining the header from the Auth request
         [string] $AboutURI = $Global:DefaultvCAVServer.ServiceURI + "diagnostics/about"
         try{
-            $JSONAboutRequest = Invoke-vCAVAPIRequest -URI $AboutURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -CheckConnection $false
+            $JSONAboutRequest = Invoke-vCAVAPIRequest -URI $AboutURI -Method Get  -CheckConnection $false
             $DefaultvCAVServer.serviceType = $JSONAboutRequest.JSONData.serviceType
             $DefaultvCAVServer.productName = $JSONAboutRequest.JSONData.productName
             $DefaultvCAVServer.buildVersion = $JSONAboutRequest.JSONData.buildVersion

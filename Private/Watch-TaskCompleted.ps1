@@ -21,9 +21,9 @@ function Watch-TaskCompleted(){
 	Monitors the task in the object $RemoveTask for a maximum of 60 seconds and returns True when the task completes
 
 	.NOTES
-	  NAME: Watch-TaskCompleted
-	  AUTHOR: Adrian Begg
-	  LASTEDIT: 2018-12-24
+	NAME: Watch-TaskCompleted
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	#>
 	Param(
 		[Parameter(Mandatory=$True)]
@@ -34,7 +34,7 @@ function Watch-TaskCompleted(){
 	$boolTaskComplete = $false
     Do {
         [string] $URI = $global:DefaultvCAVServer.ServiceURI + "tasks/" + $Task.id
-        $objTaskStatus = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+        $objTaskStatus = (Invoke-vCAVAPIRequest -URI $URI -Method Get ).JSONData
         # Write debug message
         Write-Debug $objTaskStatus
         Write-Progress -Activity "Task Id: $($Task.id)" -PercentComplete $($objTaskStatus.progress)

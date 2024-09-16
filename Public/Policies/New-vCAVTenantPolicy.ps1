@@ -46,8 +46,8 @@ function New-vCAVTenantPolicy(){
     Creates a new vCloud Availability tenant policy on the currently connected service named "Bronze" with a minimum RPO of 1440 minutes (24 hours) and a maximum number of 5 MPIT (Multiple-Point-in-Time) recovery points and allows the tenant to protect an unlimmited number of VMs/vApps. The policy will only allow inbound replication and will deny outbound replicaiton.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2018-12-24
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     Param(
@@ -74,6 +74,6 @@ function New-vCAVTenantPolicy(){
     $objTenantPolicy | Add-Member Note* allowIncoming $AllowInboundReplication
     $objTenantPolicy | Add-Member Note* allowOutgoing $AllowOutboundReplication
 
-    $RequestResponse = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objTenantPolicy) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion
+    $RequestResponse = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objTenantPolicy) -Method Post 
     $RequestResponse.JSONData
 }

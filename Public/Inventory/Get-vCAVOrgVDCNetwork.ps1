@@ -17,8 +17,8 @@ function Get-vCAVOrgVDCNetwork(){
     Returns the vCloud Org VDC Networks named "Test" assosicated with the OrgVDC "payg-dca-pigeonnuggets" if it exists.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-06-27
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(
@@ -43,13 +43,13 @@ function Get-vCAVOrgVDCNetwork(){
     # Next construct the API endpoint address from the OrgVDC Id
     $URI = $global:DefaultvCAVServer.ServiceURI + "inventory/vdcs/$($OrgVDC.id)/networks"
 
-    $colOrgVDCNetworkQueryResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+    $colOrgVDCNetworkQueryResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
     $colOrgVDCNets = $colOrgVDCNetworkQueryResponse.items
     # Check if more then 1000 results were returned and continue to query until all items have been returned
     [int] $OffsetPosition = 1000 # Set the starting offset to 1000 results
     while($OffsetPosition -lt $colOrgVDCNetworkQueryResponse.total){
         $QueryFilters.offset = $OffsetPosition
-        $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+        $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
         $colOrgVDCNets += $RequestResponse.items
         $OffsetPosition += 1000
     }

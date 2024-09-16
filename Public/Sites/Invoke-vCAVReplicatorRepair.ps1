@@ -20,8 +20,8 @@ function Invoke-vCAVReplicatorRepair(){
     Repairs a replicator with the Id "0661dbf4-4105-4754-aae5-f7c7674c044f" using the Password Password!123 and the vSphere Credentials provided at execution for the Resource vCenter Server.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-06-14
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     Param(
@@ -49,7 +49,7 @@ function Invoke-vCAVReplicatorRepair(){
     # Next we need to try and retrieve the Remote Certificate
     [string] $RemoteLookupServiceURI = $global:DefaultvCAVServer.ServiceURI + "config/remote-certificate?url=$($Replicator.apiURL)"
     try{
-        $RemoteCertificate = (Invoke-vCAVAPIRequest -URI $RemoteLookupServiceURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+        $RemoteCertificate = (Invoke-vCAVAPIRequest -URI $RemoteLookupServiceURI -Method Get ).JSONData
     } catch {
         throw "An error occured retrieving the X.509 certificate for the Replicator API Service : $($Replicator.apiURL) . Please check that it is online and accessible from  the Manager."
     }
@@ -64,7 +64,7 @@ function Invoke-vCAVReplicatorRepair(){
 
     # Now try and make the POST to reset the cookie for the Replicator
     try{
-        $ReplicatorAPIResponse = (Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objReplicatorDetails) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+        $ReplicatorAPIResponse = (Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objReplicatorDetails) -Method Post ).JSONData
     } catch {
         throw "An error occured during the API call to Invoke the Repair Operation against the Replicator with Id: $Id"
     }

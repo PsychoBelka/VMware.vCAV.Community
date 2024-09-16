@@ -26,8 +26,8 @@ function Get-vCAVCustomerSites(){
     Returns the On-Premise Customer-side vCloud Availability sites configured for the vOrg ExampleOrg.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-19
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(
@@ -37,7 +37,7 @@ function Get-vCAVCustomerSites(){
             [ValidateNotNullorEmpty()] [String] $Owner
     )
     [string] $SitesURI = $global:DefaultvCAVServer.ServiceURI + "vc-sites"
-    $colSites = (Invoke-vCAVAPIRequest -URI $SitesURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $colSites = (Invoke-vCAVAPIRequest -URI $SitesURI -Method Get ).JSONData
     if($PSBoundParameters.ContainsKey("SiteName")){
         $colSites = $colSites | Where-Object {$_.site -eq $SiteName}
         if($null -eq $colSites){
@@ -51,7 +51,7 @@ function Get-vCAVCustomerSites(){
     foreach($site in $colSites){
         try{
             [string] $vCenterURI = $global:DefaultvCAVServer.ServiceURI + "vc-sites/$($site.site)/vcenters"
-            $colvCenters = (Invoke-vCAVAPIRequest -URI $vCenterURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+            $colvCenters = (Invoke-vCAVAPIRequest -URI $vCenterURI -Method Get ).JSONData
             $site | Add-Member Note* vCenters $colvCenters
         } catch {
             Write-Warning -Message "Unable to retireve the data for the vCenters for $($site.site). This usually means there is a connection issue with the remote customer Tunnel Service."

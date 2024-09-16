@@ -25,8 +25,8 @@ function Remove-vCAVReplication(){
     Removes the Replication Protection for the vApp with the Id C4VAPP-26b6d9eb-61f9-4808-a3b0-32c9089c361b
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-19
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     [CmdletBinding(DefaultParameterSetName="vApp")]
@@ -57,7 +57,7 @@ function Remove-vCAVReplication(){
     }
     try{
         # Make the API call to execute the vCAV Operation
-        $ReplicationRemoveTask = (Invoke-vCAVAPIRequest -URI $URI -Method Delete -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+        $ReplicationRemoveTask = (Invoke-vCAVAPIRequest -URI $URI -Method Delete ).JSONData
         if(!$PSBoundParameters.ContainsKey("Async")){
             Watch-TaskCompleted -Task $ReplicationRemoveTask -Timeout ((Get-PowerCLIConfiguration -Scope Session).WebOperationTimeoutSeconds) > $null
         }

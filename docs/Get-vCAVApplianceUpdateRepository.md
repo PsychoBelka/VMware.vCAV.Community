@@ -35,8 +35,8 @@ Returns the configuration of the update service for the connected vCloud Availab
 ## OUTPUTS
 
 ## NOTES
-AUTHOR: Adrian Begg
-LASTEDIT: 2019-04-23
+AUTHOR: PsychoBelka (Original Adrian Begg)
+LASTEDIT: 2024-09-16
 VERSION: 1.0
 
 ## RELATED LINKS

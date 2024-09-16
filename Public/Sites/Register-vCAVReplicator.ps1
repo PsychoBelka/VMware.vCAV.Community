@@ -26,8 +26,8 @@ function Register-vCAVReplicator(){
     Registers the H4 Replciator with the API URI https://vcav-replicator.pigeonnuggets.com:8043/ and a root password of Password!123 with the connected H4 Manager on Site "Brisbane". The replicator will using the SSO User provided at the command prompt during execution.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-31
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.1
     #>
     Param(
@@ -52,7 +52,7 @@ function Register-vCAVReplicator(){
     # TO DO: Add check that the currently connected Service is the Replicator Manager - this cmdlet should only allow execution when connected to the Manager
     # First make a call to get the Thumbprint of the Replicator Certificate
     [string] $RemoteLookupServiceURI = $global:DefaultvCAVServer.ServiceURI + "config/remote-certificate?url=$ReplicatorAPIURI"
-    $RemoteCertificate = (Invoke-vCAVAPIRequest -URI $RemoteLookupServiceURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RemoteCertificate = (Invoke-vCAVAPIRequest -URI $RemoteLookupServiceURI -Method Get ).JSONData
 
     # Now make the call to the Replicator Config namespace
     [string] $ConfigURI = $global:DefaultvCAVServer.ServiceURI + "replicators"
@@ -68,6 +68,6 @@ function Register-vCAVReplicator(){
     $objReplicatorConfig | Add-Member Note* site $SiteName
     $objReplicatorConfig | Add-Member Note* description $Description
     $objReplicatorConfig | Add-Member Note* details $objReplicatorDetails
-    $ConfigResponse = (Invoke-vCAVAPIRequest -URI $ConfigURI -Data (ConvertTo-JSON $objReplicatorConfig) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $ConfigResponse = (Invoke-vCAVAPIRequest -URI $ConfigURI -Data (ConvertTo-JSON $objReplicatorConfig) -Method Post ).JSONData
     $ConfigResponse
 }

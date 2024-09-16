@@ -35,8 +35,8 @@ Returns the current configuration of the vCloud Availability Tunnel Endpoint for
 ## OUTPUTS
 
 ## NOTES
-AUTHOR: Adrian Begg
-LASTEDIT: 2018-12-24
+AUTHOR: PsychoBelka (Original Adrian Begg)
+LASTEDIT: 2024-09-16
 VERSION: 2.0
 
 ## RELATED LINKS

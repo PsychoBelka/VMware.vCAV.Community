@@ -31,8 +31,8 @@ function Remove-vCAVTenantPolicy(){
     If there are currently any Organisations assigned to this policy they will be reassigned to the "default" policy for the installation.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-03-15
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     [CmdletBinding(DefaultParameterSetName="Default")]
@@ -70,6 +70,6 @@ function Remove-vCAVTenantPolicy(){
     }
     # If all tests have passed perform the DELETE against the policy
     $URI = $global:DefaultvCAVServer.ServiceURI + "policies/" + $objPolicy.Id
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Delete -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Delete ).JSONData
     $RequestResponse
 }

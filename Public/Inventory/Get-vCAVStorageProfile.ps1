@@ -24,8 +24,8 @@ function Get-vCAVStorageProfile(){
     Returns the Storage Profiles named "Gold" assosicated with the vCloud Org VDC with the name "payg-dca-pigeonnuggets" if it exists.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-06-24
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(
@@ -47,7 +47,7 @@ function Get-vCAVStorageProfile(){
     }
     # Next construct the API endpoint address from the OrgVDC Id
     $URI = $global:DefaultvCAVServer.ServiceURI + "inventory/vdcs/$($OrgVDC.id)/storage-profiles"
-    $colOrgVDCStorageResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+    $colOrgVDCStorageResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
     $colOrgVDCStorageProfiles = $colOrgVDCStorageResponse
     # Finally filter on the Storage Profile Name if required (this has to be done post call at present)
     if($PSBoundParameters.ContainsKey("StorageProfile")){

@@ -21,8 +21,8 @@ function Set-vCAVParticipateCEIP(){
     Enables sending telemetry data to VMWare
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-18
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(
@@ -43,5 +43,5 @@ function Set-vCAVParticipateCEIP(){
     $objCIEP | Add-Member Note* environment "PRODUCTION"
     # Send the request to the API
     $CIEPURI = $global:DefaultvCAVServer.ServiceURI + "config/telemetry"
-    (Invoke-vCAVAPIRequest -URI $CIEPURI -Method Post -Data (ConvertTo-JSON $objCIEP) -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    (Invoke-vCAVAPIRequest -URI $CIEPURI -Method Post -Data (ConvertTo-JSON $objCIEP)).JSONData
 }

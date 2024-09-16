@@ -17,8 +17,8 @@ function Remove-vCAVCustomerSite(){
     Removes the vCenter Site with the Site Name "Pigeon_OnPrem" from the current installation.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-19
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(
@@ -31,7 +31,7 @@ function Remove-vCAVCustomerSite(){
     Get-vCAVCustomerSites -SiteName $SiteName > $null
     [string] $SitesURI = $global:DefaultvCAVServer.ServiceURI + "vc-sites/$SiteName"
     try{
-        $RemoveSites = (Invoke-vCAVAPIRequest -URI $SitesURI -Method Delete -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+        $RemoveSites = (Invoke-vCAVAPIRequest -URI $SitesURI -Method Delete ).JSONData
         if(!$PSBoundParameters.ContainsKey("Async")){
             Watch-TaskCompleted -Task $RemoveSites -Timeout ((Get-PowerCLIConfiguration -Scope Session).WebOperationTimeoutSeconds) > $null
         }

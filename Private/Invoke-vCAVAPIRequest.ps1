@@ -17,9 +17,6 @@ function Invoke-vCAVAPIRequest(){
     .PARAMETER Method
     The HTTP Method to send for the API call
 
-    .PARAMETER APIVersion
-    The API version to be used for the API call
-
     .PARAMETER Data
     JSON data to be sent as the HTTP Payload in the API call.
 
@@ -33,44 +30,50 @@ function Invoke-vCAVAPIRequest(){
     A Hashtable containing a list of query parameters or specify the content of the response for a GET Request.
 
     .EXAMPLE
-    Invoke-vCAVAPIRequest -URI ($global:DefaultvCAVServer.ServiceURI + "config/is-configured") -Method "Get" -APIVersion 1
+    Invoke-vCAVAPIRequest -URI ($global:DefaultvCAVServer.ServiceURI + "config/is-configured") -Method "Get"
     Performs a HTTP GET request against the connected server/config/is-configured using API Version 1 and returns the JSON response.
 
     .EXAMPLE
-    Invoke-vCAVAPIRequest -URI ($global:DefaultvCAVServer.ServiceURI + "license"") -Method "Get" -APIVersion 2
+    Invoke-vCAVAPIRequest -URI ($global:DefaultvCAVServer.ServiceURI + "license"") -Method "Get"
     Performs a HTTP GET request against the connected server licnecing namespace using API Version 2 and returns the JSON response.
 
     .EXAMPLE
-    Invoke-vCAVAPIRequest -URI ($global:DefaultvCAVServer.ServiceURI + "license"") -Method "Get" -APIVersion 2 -QueryParameters $htParameters
+    Invoke-vCAVAPIRequest -URI ($global:DefaultvCAVServer.ServiceURI + "license"") -Method "Get" -QueryParameters $htParameters
     Performs a HTTP GET request against the connected server licnecing namespace using API Version 2 and passes the parameters in the Hashatable $htParemeters as Query paremeters and returns the JSON response.
 
     .EXAMPLE
-    Invoke-vCAVAPIRequest -URI  ($global:DefaultvCAVServer.ServiceURI + "config/root-password") -Data (ConvertTo-JSON $objRootPassword) -Method Post -APIVersion 1
+    Invoke-vCAVAPIRequest -URI  ($global:DefaultvCAVServer.ServiceURI + "config/root-password") -Data (ConvertTo-JSON $objRootPassword) -Method Post
     Performs a HTTP Post to reset the root password using the API verson 1 and forcing a certificate check.
 
     .NOTES
     This cmdlet obeys the ProxyPolicy and InvalidCertificateAction parameters set in the VMWare PowerCLI Configuration.
     There is a limitation for PowershellCore that at the cmdlet can only be used with the "UseSystemProxy" policy on Windows netsh winhttp show proxy settings; this will be changed in future
 
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-10
-	VERSION: 3.2
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
+	VERSION: 4.0
     #>
     Param(
         [Parameter(Mandatory=$True)]
-            [ValidateScript({[system.uri]::IsWellFormedUriString($_,[System.UriKind]::Absolute)})] [string] $URI,
+        [ValidateScript({[system.uri]::IsWellFormedUriString($_,[System.UriKind]::Absolute)})]
+        [string] $URI,
+        
         [Parameter(Mandatory=$True)]
-            [ValidateSet("Get","Put","Post","Delete","Patch")] [string] $Method,
-        [Parameter(Mandatory=$True)]
-            [ValidateSet(1,2,3,4)] [int] $APIVersion,
-        [Parameter(Mandatory=$False)]
-            [ValidateNotNullorEmpty()] [string] $Data,
-        [Parameter(Mandatory=$False)]
-            [bool] $CheckConnection = $true,
-        [Parameter(Mandatory=$False)]
-            [Hashtable] $Headers,
-        [Parameter(Mandatory=$False)]
-            [Hashtable] $QueryParameters
+        [ValidateSet("Get","Put","Post","Delete","Patch")]
+        [string] $Method,
+        
+        [Parameter()]
+        [ValidateNotNullorEmpty()]
+        [string] $Data,
+        
+        [Parameter()]
+        [switch] $CheckConnection = $true,
+        
+        [Parameter()]
+        [Hashtable] $Headers,
+        
+        [Parameter()]
+        [Hashtable] $QueryParameters
 	)
     # Validate the environment is ready based on the input parameters
     if($CheckConnection){
@@ -81,16 +84,7 @@ function Invoke-vCAVAPIRequest(){
     # Construct the headers for the API call
     $APIHeaders = @{
             'Content-Type' = 'application/json'
-    }
-    # Add the API Version Header
-    if($APIVersion -eq 1){
-        $APIHeaders.Add('Accept','application/vnd.vmware.h4-v1+json')
-    } elseif($APIVersion -eq 2){
-        $APIHeaders.Add('Accept','application/vnd.vmware.h4-v2+json')
-    } elseif($APIVersion -eq 3){
-        $APIHeaders.Add('Accept','application/vnd.vmware.h4-v3+json')
-    } elseif($APIVersion -eq 4){
-        $APIHeaders.Add('Accept','application/vnd.vmware.h4-v3.5+json')
+            'Accept' = 'application/json'
     }
     # Add an Operation Id for Tracking Transactions in logs
     $APIHeaders.Add('operationID',("Powershell__$(New-Guid)"))

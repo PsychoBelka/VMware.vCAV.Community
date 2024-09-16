@@ -11,11 +11,11 @@ function Get-vCAVApplianceHealth(){
     Returns the current health of the currently connected vCloud Availability Service. 
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-02-21
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     $URI = $global:DefaultvCAVServer.ServiceURI + "diagnostics/health"
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get).JSONData
     $RequestResponse
 }

@@ -43,8 +43,8 @@ function Get-vCAVWorkloads(){
     Returns the vCenter based workloads for all registered vCenters in the customer site "PigeonNuggets_OnPrem"
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-19
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     [CmdletBinding(DefaultParameterSetName="vCloud-vApp")]
@@ -83,12 +83,12 @@ function Get-vCAVWorkloads(){
         }
         # Now make the API call for the objects
         # Now make the first call to the API and add the items to a collection
-        $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+        $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
         $colWorkloads = $RequestResponse.items
         [int] $OffsetPosition = 100 # Set the starting offset to 100 results
         while($OffsetPosition -lt $RequestResponse.total){
             $QueryFilters.offset = $OffsetPosition
-            $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+            $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
             $colWorkloads += $RequestResponse.items
             $OffsetPosition += 100
         }
@@ -104,11 +104,11 @@ function Get-vCAVWorkloads(){
         # Make the API call for each vCenter
         foreach($vCenterServer in $vCenterSite.vCenters){
             $vCenterURI = "$URI/$($vCenterServer.vcId)/vms"
-            $RequestResponse = (Invoke-vCAVAPIRequest -URI $vCenterURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+            $RequestResponse = (Invoke-vCAVAPIRequest -URI $vCenterURI -Method Get  -QueryParameters $QueryFilters).JSONData
             $colVMs += $RequestResponse.items
             while($OffsetPosition -lt $RequestResponse.total){
                 $QueryFilters.offset = $OffsetPosition
-                $RequestResponse = (Invoke-vCAVAPIRequest -URI $vCenterURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+                $RequestResponse = (Invoke-vCAVAPIRequest -URI $vCenterURI -Method Get  -QueryParameters $QueryFilters).JSONData
                 $colVMs += $RequestResponse.items
                 $OffsetPosition += 100
             }

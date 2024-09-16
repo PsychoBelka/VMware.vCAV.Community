@@ -55,8 +55,8 @@ function Get-vCAVTrafficReport(){
     Returns a summary of all replication data traffic for the vOrg PigeonNuggets in hourly minute samples for the last week.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-18
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(
@@ -130,7 +130,7 @@ function Get-vCAVTrafficReport(){
     }
 
     # Make the API call and return the data to the caller
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
 
     # Now need to make the Reported output more readable/usable for processing in PowerShell for other applications
     # Convert the response to a meaning values for Time (DateTime)

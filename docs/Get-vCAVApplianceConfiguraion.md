@@ -35,8 +35,8 @@ Returns the configuration of the connected vCloud Availability.
 ## OUTPUTS
 
 ## NOTES
-AUTHOR: Adrian Begg
-LASTEDIT: 2019-09-10
+AUTHOR: PsychoBelka (Original Adrian Begg)
+LASTEDIT: 2024-09-16
 VERSION: 3.0
 
 Check if the appliance is configured first

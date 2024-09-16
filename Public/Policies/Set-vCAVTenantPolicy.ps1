@@ -52,8 +52,8 @@ function Set-vCAVTenantPolicy(){
     Sets the Maximum number of Multiple Point-in-time (MPIT) recovery points for the policy with the name "Test Policy" to 10, the maximum number of replicated VMs to 6 and disables Outbound replication.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-19
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 3.0
     #>
     [CmdletBinding(DefaultParameterSetName="ById")]
@@ -114,6 +114,6 @@ function Set-vCAVTenantPolicy(){
         $objTenantPolicy | Add-Member Note* allowOutgoing $objPolicy.allowOutgoing
     }
     # Make the call to update the policy
-    $RequestResponse = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objTenantPolicy) -Method Put -APIVersion $DefaultvCAVServer.DefaultAPIVersion
+    $RequestResponse = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objTenantPolicy) -Method Put 
     $RequestResponse.JSONData
 }

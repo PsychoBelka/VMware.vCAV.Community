@@ -24,8 +24,8 @@ function Install-vCAVCertificate(){
     Installs the certificate in PKCS#12 file D:\Tools\Scripts\vSphere\vCAV\vcav-site-a-pigeonnuggets-com.pfx with keystore and private key password of Password! to the connected vCloud Availability service without prompting for confirmation.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-16
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     Param(

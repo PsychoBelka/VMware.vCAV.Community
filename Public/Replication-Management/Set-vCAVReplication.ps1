@@ -70,8 +70,8 @@ function Set-vCAVReplication() {
     Set-vCAVReplication -ReplicationType vApp -ReplicationId C4-aef12910-9f62-4a51-a100-12faeedbaaf4 -Quiesced $True -RPOMinutes 120 -SnapshotDistance 15 -Async
     Enable Guest OS Quiesce and adjusts the RPO for the vApp with Replication Id C4-aef12910-9f62-4a51-a100-12faeedbaaf4. The task runs asynchronously
 
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-22
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     [CmdletBinding(DefaultParameterSetName = "ReplicationSettings")]
@@ -234,7 +234,7 @@ function Set-vCAVReplication() {
     }
     # Now execute the call to adjust the Replication settings if we had an actual configuration change
     if ($boolValuesAdjusted) {
-        $ReplicationOp = (Invoke-vCAVAPIRequest -URI $URI -Method $OperationMethod -Data (ConvertTo-JSON $objPayload -Depth 6) -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+        $ReplicationOp = (Invoke-vCAVAPIRequest -URI $URI -Method $OperationMethod -Data (ConvertTo-JSON $objPayload -Depth 6) ).JSONData
         if($boolTaskReturned){
             if (!$PSBoundParameters.ContainsKey("Async")) {
                 Watch-TaskCompleted -Task $ReplicationOp -Timeout ((Get-PowerCLIConfiguration -Scope Session).WebOperationTimeoutSeconds) > $null

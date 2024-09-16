@@ -17,8 +17,8 @@ function Set-VCAVApplianceRootPassword(){
     Resets the root password of the connected vCloud Availability appliance from "Password!234" to "Password!345"
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-02-12
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 3.0
     #>
     Param(
@@ -29,13 +29,13 @@ function Set-VCAVApplianceRootPassword(){
     )
     # Check if the password is expired first, bypass the check-root-password if expired
     $CheckPassExpiredURI = $global:DefaultvCAVServer.ServiceURI + "appliance/root-password-expired"
-    $expired = Invoke-vCAVAPIRequest -URI $CheckPassExpiredURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion
+    $expired = Invoke-vCAVAPIRequest -URI $CheckPassExpiredURI -Method Get
     if($expired.JSONData.rootPasswordExpired -eq $false){
         # First check if the old password provided is correct
         $CheckPassURI = $global:DefaultvCAVServer.ServiceURI + "config/check-root-password"
         $objOldPassword = New-Object System.Management.Automation.PSObject
         $objOldPassword | Add-Member Note* password $OldPassword
-        $oldPasswordCheck = Invoke-vCAVAPIRequest -URI $CheckPassURI -Data (ConvertTo-JSON $objOldPassword) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion
+        $oldPasswordCheck = Invoke-vCAVAPIRequest -URI $CheckPassURI -Data (ConvertTo-JSON $objOldPassword) -Method Post
     } elseif($expired.JSONData.rootPasswordExpired -eq $true) {
         $oldPasswordCheck = New-Object System.Management.Automation.PSObject
         $oldPasswordCheck | Add-Member Note* valid $True
@@ -46,7 +46,7 @@ function Set-VCAVApplianceRootPassword(){
         $URI = $global:DefaultvCAVServer.ServiceURI + "config/root-password"
         $objRootPassword = New-Object System.Management.Automation.PSObject
         $objRootPassword | Add-Member Note* rootPassword $NewPassword
-        $Request = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objRootPassword) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion  -Headers @{'Config-Secret' = $OldPassword}
+        $Request = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objRootPassword) -Method Post  -Headers @{'Config-Secret' = $OldPassword}
         $Request.JSONData
     } else {
         throw "The provided current root password is incorrect. Please check the password and try again."

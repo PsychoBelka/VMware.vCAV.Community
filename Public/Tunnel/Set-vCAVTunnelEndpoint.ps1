@@ -24,8 +24,8 @@ function Set-vCAVTunnelEndpoint(){
     Sets the Public Tunnel Endpoint for the current vCloud installation to vcav.pigeonnuggets.com and the internal address to vcav.internal.pigeonnuggets.com on TCP 8048 (management on TCP 8047)
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-08-22
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     Param(
@@ -57,6 +57,6 @@ function Set-vCAVTunnelEndpoint(){
     $objTunnelEndpoint | Add-Member Note* tunnelPublicAddress $TunnelAddressPublicURI.Host
     $objTunnelEndpoint | Add-Member Note* tunnelPublicPort $TunnelAddressPublicURI.Port
 
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objTunnelEndpoint) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objTunnelEndpoint) -Method Post ).JSONData
     $RequestResponse
 }

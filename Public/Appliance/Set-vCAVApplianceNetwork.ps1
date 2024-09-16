@@ -29,8 +29,8 @@ function Set-vCAVApplianceNetwork(){
     Sets the primary DNS server to 192.168.88.20 and leaves all other settings as they are currently configured.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-10
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(
@@ -77,7 +77,7 @@ function Set-vCAVApplianceNetwork(){
             $DNSSettings | Add-Member Note* dnsSearchDomains $CurrentNetworkConfig.dnsSearchDomains
         }
         # Now make the POST to the API endpoint to set the DNS settings and return the new network settings
-        $RequestResponse = (Invoke-vCAVAPIRequest -URI $DNSConfigURI -Data (ConvertTo-JSON $DNSSettings) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+        $RequestResponse = (Invoke-vCAVAPIRequest -URI $DNSConfigURI -Data (ConvertTo-JSON $DNSSettings) -Method Post).JSONData
         $RequestResponse
     }
 }

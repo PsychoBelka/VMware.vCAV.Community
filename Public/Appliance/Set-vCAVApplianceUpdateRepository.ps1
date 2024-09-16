@@ -23,8 +23,8 @@ function Set-vCAVApplianceUpdateRepository(){
     Sets the Repository Url for the connected vCloud Availability service to a local web server https://localupdate.pigeonnuggets.com/vcav/ which contains the update ISO. The connection is made without authentication.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-19
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(
@@ -69,7 +69,7 @@ function Set-vCAVApplianceUpdateRepository(){
         $objUpdateRepo | Add-Member Note* repositoryUrl ""
         $objUpdateRepo | Add-Member Note* username $null
     }
-    $ConfigresponseTask = (Invoke-vCAVAPIRequest -URI $UpdateConfigURI -Data (ConvertTo-JSON $objUpdateRepo) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $ConfigresponseTask = (Invoke-vCAVAPIRequest -URI $UpdateConfigURI -Data (ConvertTo-JSON $objUpdateRepo) -Method Post).JSONData
     if((Watch-TaskCompleted -Task $ConfigresponseTask -Timeout ((Get-PowerCLIConfiguration -Scope Session).WebOperationTimeoutSeconds))){
         Get-vCAVApplianceUpdateRepository
     }

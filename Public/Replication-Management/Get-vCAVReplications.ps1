@@ -94,8 +94,8 @@ function Get-vCAVReplications() {
     Returns a summary of vCAV Replications (Dashboard View).
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-06-27
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.1
     #>
     [CmdletBinding(DefaultParameterSetName = "vApp")]
@@ -212,17 +212,17 @@ function Get-vCAVReplications() {
     }
     if ($PSCmdlet.ParameterSetName -eq "Summary") {
         $URI = $global:DefaultvCAVServer.ServiceURI + "vapp-replications/summary"
-        $colvAppReplications = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+        $colvAppReplications = (Invoke-vCAVAPIRequest -URI $URI -Method Get ).JSONData
     }
     else {
         # Now make the first call to the API and add the items to a collection
-        $ReplicationQueryResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+        $ReplicationQueryResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
         $colvAppReplications = $ReplicationQueryResponse.items
         # Check if more then 100 results were returned and continue to query until all items have been returned
         [int] $OffsetPosition = 100 # Set the starting offset to 100 results
         while ($OffsetPosition -lt $ReplicationQueryResponse.total) {
             $QueryFilters.offset = $OffsetPosition
-            $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+            $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
             $colvAppReplications += $RequestResponse.items
             $OffsetPosition += 100
         }
@@ -237,14 +237,14 @@ function Get-vCAVReplications() {
             if ($objReplication.vmReplications.Count -gt 0) {
                 foreach ($objVMReplication in $objReplication.vmReplications) {
                     $URI = $global:DefaultvCAVServer.ServiceURI + "vm-replications/$($objVMReplication.id)/instances"
-                    $colInstances = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+                    $colInstances = (Invoke-vCAVAPIRequest -URI $URI -Method Get ).JSONData
                     $objVMReplication | Add-Member Note* ReplicationInstances $colInstances
                 }
             }
             else {
                 # If VM Replications just need to get the Instances for the VM
                 $URI = $global:DefaultvCAVServer.ServiceURI + "vm-replications/$($objReplication.id)/instances"
-                $colInstances = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+                $colInstances = (Invoke-vCAVAPIRequest -URI $URI -Method Get ).JSONData
                 $objReplication | Add-Member Note* ReplicationInstances $colInstances
             }
         }

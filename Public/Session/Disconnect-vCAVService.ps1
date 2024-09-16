@@ -11,8 +11,8 @@ function Disconnect-vCAVService(){
     Disconnects the currently configured session in the $global:DefaultvCAVServer global variable.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-06-14
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     if(!$global:DefaultvCAVServer.IsConnected){
@@ -21,7 +21,7 @@ function Disconnect-vCAVService(){
         # Make the call to the API to logoff and remove the session variable from PowerShell
         [string] $SessionsAPIURI = $global:DefaultvCAVServer.ServiceURI + "sessions"
         try {
-            $JSONAuthDisconnect = Invoke-vCAVAPIRequest -URI $SessionsAPIURI -Method Delete -APIVersion $DefaultvCAVServer.DefaultAPIVersion
+            $JSONAuthDisconnect = Invoke-vCAVAPIRequest -URI $SessionsAPIURI -Method Delete 
         }
         catch {
             # Don't care if it fails need to fill it with fire anyway and remove the variable

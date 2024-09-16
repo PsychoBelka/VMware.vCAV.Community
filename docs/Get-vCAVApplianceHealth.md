@@ -35,8 +35,8 @@ Returns the current health of the currently connected vCloud Availability Servic
 ## OUTPUTS
 
 ## NOTES
-AUTHOR: Adrian Begg
-LASTEDIT: 2019-02-21
+AUTHOR: PsychoBelka (Original Adrian Begg)
+LASTEDIT: 2024-09-16
 VERSION: 2.0
 
 ## RELATED LINKS

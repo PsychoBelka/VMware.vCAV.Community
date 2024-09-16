@@ -22,8 +22,8 @@ function Test-VCAVServiceEnvironment(){
 	Returns true if the $global:DefaultvCAVServer.ServiceType is Manager
 
 	.NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-02-12
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 3.0
 	#>
 	Param(

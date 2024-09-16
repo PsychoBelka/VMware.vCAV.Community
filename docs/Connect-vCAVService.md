@@ -301,8 +301,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 This cmdlet does not currently support the SAML authentication method.
 
-AUTHOR: Adrian Begg
-LASTEDIT: 2019-09-10
+AUTHOR: PsychoBelka (Original Adrian Begg)
+LASTEDIT: 2024-09-16
 VERSION: 4.0
 
 ## RELATED LINKS

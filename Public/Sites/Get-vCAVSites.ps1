@@ -29,8 +29,8 @@ function Get-vCAVSites(){
     Returns the local vCloud Availability sites configured for the currently connected installation. If none exist nothing is returned.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-05-10
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 3.0
     #>
     [CmdletBinding(DefaultParameterSetName="Default")]
@@ -42,7 +42,7 @@ function Get-vCAVSites(){
             [ValidateSet("Local","Remote")] [String] $SiteType
     )
     [string] $SitesURI = $global:DefaultvCAVServer.ServiceURI + "sites"
-    $colSites = (Invoke-vCAVAPIRequest -URI $SitesURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $colSites = (Invoke-vCAVAPIRequest -URI $SitesURI -Method Get ).JSONData
     if($PSCmdlet.ParameterSetName -eq "ByType"){
         # Filter the site by type
         if($SiteType -eq "Local"){

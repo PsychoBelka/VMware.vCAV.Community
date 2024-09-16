@@ -14,8 +14,8 @@ function Set-vCAVApplianceHostname(){
     Sets the hostname of the connected to "Replication-A"
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-02-12
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 3.0
     #>
     Param(
@@ -25,6 +25,6 @@ function Set-vCAVApplianceHostname(){
     $URI = $global:DefaultvCAVServer.ServiceURI + "config/network/hostname"
     $objHostname = New-Object System.Management.Automation.PSObject
     $objHostname | Add-Member Note* hostname $Hostname
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objHostname) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objHostname) -Method Post).JSONData
     $RequestResponse
 }

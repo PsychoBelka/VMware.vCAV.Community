@@ -14,8 +14,8 @@ function Set-vCAVApplianceNTP(){
     Sets the NTP Servers for the connected installation to "192.168.88.10" and "192.168.88.11"
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-10
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(
@@ -29,7 +29,7 @@ function Set-vCAVApplianceNTP(){
         # Create the object for the Post and make the API call
         $objNTPSettings = New-Object System.Management.Automation.PSObject
         $objNTPSettings | Add-Member Note* ntpServers $NTPServers
-        $RequestResponse = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objNTPSettings) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion
+        $RequestResponse = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objNTPSettings) -Method Post
         $RequestResponse.JSONData
     }
 }

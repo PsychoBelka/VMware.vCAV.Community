@@ -21,8 +21,8 @@ function Set-vCAVProviderVDCFilters(){
     Removes any Provider VDC filters and makes all Provider VDCs in the currently connected vCloud Availabilty service available.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-17
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(
@@ -63,7 +63,7 @@ function Set-vCAVProviderVDCFilters(){
 
     # Make the API call to set the filters
     $URI = $global:DefaultvCAVServer.ServiceURI + "config/pvdc-filter"
-    (Invoke-vCAVAPIRequest -URI $URI -Method Post -Data (ConvertTo-JSON $colFilters) -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData > $null
+    (Invoke-vCAVAPIRequest -URI $URI -Method Post -Data (ConvertTo-JSON $colFilters) ).JSONData > $null
     # Now return the currently connected filters
     Get-vCAVProviderVDCFilters
 }

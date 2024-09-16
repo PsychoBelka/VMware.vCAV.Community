@@ -14,8 +14,8 @@ function Set-vCAVApplianceSSHAccess(){
     Enables the SSH daemon on the connected vCloud Availability service.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-10
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(
@@ -33,7 +33,7 @@ function Set-vCAVApplianceSSHAccess(){
             # Create the object for the Post and make the API call
             $objSSHDSettings = New-Object System.Management.Automation.PSObject
             $objSSHDSettings | Add-Member Note* enable $SSHDEnabled
-            $RequestResponse = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objSSHDSettings) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion
+            $RequestResponse = Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objSSHDSettings) -Method Post
             $RequestResponse.JSONData
         }
     }

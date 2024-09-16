@@ -11,11 +11,11 @@ function Get-vCAVApplianceUpdateRepository(){
     Returns the configuration of the update service for the connected vCloud Availability service.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-04-23
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     $UpdateConfigURI = $global:DefaultvCAVServer.ServiceURI + "update/repository-url"
-    $Configresponse = (Invoke-vCAVAPIRequest -URI $UpdateConfigURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $Configresponse = (Invoke-vCAVAPIRequest -URI $UpdateConfigURI -Method Get).JSONData
     $Configresponse
 }

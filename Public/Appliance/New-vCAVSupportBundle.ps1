@@ -18,8 +18,8 @@ function New-vCAVSupportBundle(){
     Generates a new vCloud Availability support bundle and returns the details of the support bundle object generated and downloads the buddle to the current working directory.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-02-22
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     Param(
@@ -27,7 +27,7 @@ function New-vCAVSupportBundle(){
             [bool]$Download = $false
     )
     [string] $URI = $global:DefaultvCAVServer.ServiceURI + "diagnostics/bundles"
-    $SupportBundle = (Invoke-vCAVAPIRequest -URI $URI -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $SupportBundle = (Invoke-vCAVAPIRequest -URI $URI -Method Post).JSONData
     # Returns a Task
     if((Watch-TaskCompleted -Task $SupportBundle -Timeout 3600)){
         $SupportBundleId = $SupportBundle.workflowInfo.resourceId

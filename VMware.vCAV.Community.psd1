@@ -18,7 +18,7 @@ ModuleVersion = '4.5.0.0'
 CompatiblePSEditions = 'Desktop', 'Core'
 
 # ID used to uniquely identify this module
-GUID = '91eb57b9-6b53-473b-bd33-fceeeabac315'
+GUID = '74eeb063-0df2-48d3-acd9-cbf2f8ce02fe'
 
 # Author of this module
 Author = 'PsychoBelka'
@@ -45,7 +45,7 @@ PowerShellVersion = '5.0'
 # DotNetFrameworkVersion = ''
 
 # Minimum version of the common language runtime (CLR) required by this module. This prerequisite is valid for the PowerShell Desktop edition only.
-# CLRVersion = ''
+# ClrVersion = ''
 
 # Processor architecture (None, X86, Amd64) required by this module
 # ProcessorArchitecture = ''
@@ -196,13 +196,22 @@ PrivateData = @{
         LicenseUri = 'https://raw.githubusercontent.com/PsychoBelka/VMware.vCAV.Community/master/LICENSE'
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://https://github.com/PsychoBelka/VMware.vCAV.Community'
+        ProjectUri = 'https://github.com/PsychoBelka/VMware.vCAV.Community'
 
         # A URL to an icon representing this module.
         # IconUri = ''
 
         # ReleaseNotes of this module
         # ReleaseNotes = ''
+
+        # Prerelease string of this module
+        # Prerelease = ''
+
+        # Flag to indicate whether the module requires explicit user acceptance for install/update/save
+        # RequireLicenseAcceptance = $false
+
+        # External dependent modules of this module
+        # ExternalModuleDependencies = @()
 
     } # End of PSData hashtable
 

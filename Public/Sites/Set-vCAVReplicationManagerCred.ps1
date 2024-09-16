@@ -17,8 +17,8 @@ function Set-vCAVReplicationManagerCred(){
     Sets the Resource vCenter Service Account for the H4 Manager to "administrator@vsphere.local"
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-31
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
 
@@ -35,6 +35,6 @@ function Set-vCAVReplicationManagerCred(){
     $objvCenterConfig | Add-Member Note* managerCertificate ""
     $objvCenterConfig | Add-Member Note* ssoUsername ($SSOCredentials.Username)
     $objvCenterConfig | Add-Member Note* ssoPassword ($SSOCredentials.GetNetworkCredential().Password)
-    $vCenterConfigResponse = Invoke-vCAVAPIRequest -URI $ConfigURI -Data (ConvertTo-JSON $objvCenterConfig) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion
+    $vCenterConfigResponse = Invoke-vCAVAPIRequest -URI $ConfigURI -Data (ConvertTo-JSON $objvCenterConfig) -Method Post 
     $vCenterConfigResponse.JSONData
 }

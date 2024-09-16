@@ -34,8 +34,8 @@ function Get-vCAVReplicationNetworkSettings(){
     Returns the Replication Network Settings for the vApp Replication with the vApp Name "Test-2VMs"
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-05-27
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     [CmdletBinding(DefaultParameterSetName="vApp")]
@@ -82,6 +82,6 @@ function Get-vCAVReplicationNetworkSettings(){
     }
     # Build the URI to the API
     $URI += "/$($ReplicationObject.id)/network-settings"
-    $colReplicationNetwork = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $colReplicationNetwork = (Invoke-vCAVAPIRequest -URI $URI -Method Get ).JSONData
     $colReplicationNetwork
 }

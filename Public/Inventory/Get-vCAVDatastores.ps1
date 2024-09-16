@@ -25,8 +25,8 @@ function Get-vCAVDatastores(){
     Returns the datastore with the Name vCloud-NFS-1 on the currently connected site.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-19
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     [CmdletBinding(DefaultParameterSetName="Default")]
@@ -38,7 +38,7 @@ function Get-vCAVDatastores(){
     )
     # Set the API endpoint
     $URI = $global:DefaultvCAVServer.ServiceURI + "inventory/datastores"
-    $colDatastoreQueryResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $colDatastoreQueryResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get ).JSONData
     # Now filter if required
     if($PSBoundParameters.ContainsKey("Name")){
     # Check if a filter has been provided for the name

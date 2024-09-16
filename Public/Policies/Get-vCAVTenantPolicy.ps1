@@ -25,8 +25,8 @@ function Get-vCAVTenantPolicy(){
     Returns the vCloud Availability tenant policy with the Id 1 if it exists
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-03-15
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     [CmdletBinding(DefaultParameterSetName="Default")]
@@ -37,7 +37,7 @@ function Get-vCAVTenantPolicy(){
             [ValidateNotNullorEmpty()] [String] $Id
     )
     $URI = $global:DefaultvCAVServer.ServiceURI + "policies"
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get ).JSONData
     # Next we need to filter the responses
     if($PSCmdlet.ParameterSetName -eq "ByName"){
         $colvCAVTenantPolicies = $RequestResponse | Where-Object {$_.displayName -eq $Name}
@@ -49,7 +49,7 @@ function Get-vCAVTenantPolicy(){
     # For each policy we need to get the Org Policy status for each of the policies
     foreach($objPolicy in $colvCAVTenantPolicies){
         $StatusURI = $global:DefaultvCAVServer.ServiceURI + "policies/$($objPolicy.id)/status"
-        $OrgRequestResponse = (Invoke-vCAVAPIRequest -URI $StatusURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+        $OrgRequestResponse = (Invoke-vCAVAPIRequest -URI $StatusURI -Method Get ).JSONData
         $objPolicy | Add-Member Organisations $OrgRequestResponse
     }
     $colvCAVTenantPolicies

@@ -19,8 +19,8 @@ function Register-vCAVTunnel(){
     Registers the vCloud Availability Runnel Service with the FQDN vcav-sitea.pigeonnuggets.com on TCP 8047 and the root password "Password!123" as the H4 Tunnel Service for this installation.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-06-14
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 3.0
     #>
     Param(
@@ -31,7 +31,7 @@ function Register-vCAVTunnel(){
     )
     # First retrieve the certificate using the API
     [string] $certURI = $global:DefaultvCAVServer.ServiceURI + "config/remote-certificate?url=$TunnelServiceURI"
-    $tunnelCertificate = (Invoke-vCAVAPIRequest -URI $certURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $tunnelCertificate = (Invoke-vCAVAPIRequest -URI $certURI -Method Get ).JSONData
     # Cast to a PSCredential for passing to the API
     $TunnelCredentials = New-Object System.Management.Automation.PSCredential("root",$TunnelServiceRootPassword)
     # Next construct the object for the API
@@ -41,6 +41,6 @@ function Register-vCAVTunnel(){
     $objTunnelEndpoint | Add-Member Note* certificate $tunnelCertificate.encoded
     $objTunnelEndpoint | Add-Member Note* rootPassword ($TunnelCredentials.GetNetworkCredential().Password)
 
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $tunnelURI -Data (ConvertTo-JSON $objTunnelEndpoint) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $tunnelURI -Data (ConvertTo-JSON $objTunnelEndpoint) -Method Post ).JSONData
     $RequestResponse
 }

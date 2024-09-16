@@ -17,8 +17,8 @@ function Set-vCAVSitevCloud(){
     Sets the vCloud configuration for all vCloud operations in the local site to https://vcd.pigeonnuggets.com/api using the bultin-in administrator account for vCloud and a Password of "Password!123"
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-10
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 3.0
     #>
 
@@ -30,7 +30,7 @@ function Set-vCAVSitevCloud(){
     )
     # First make a call to get the Thumbprint of the vCloud API Certificate
     [string] $RemoteLookupServiceURI = $global:DefaultvCAVServer.ServiceURI + "config/remote-certificate?url=$vCloudAPIURI"
-    $RemoteCertificate = (Invoke-vCAVAPIRequest -URI $RemoteLookupServiceURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RemoteCertificate = (Invoke-vCAVAPIRequest -URI $RemoteLookupServiceURI -Method Get ).JSONData
 
     # Configure the vCloud connection for the Site
     [string] $ConfigVCDURI = $global:DefaultvCAVServer.ServiceURI + "config/vcloud"
@@ -39,6 +39,6 @@ function Set-vCAVSitevCloud(){
     $objvCloudConfig | Add-Member Note* vcdThumbprint $RemoteCertificate.certificate.thumbPrint
     $objvCloudConfig | Add-Member Note* vcdUrl $vCloudAPIURI
     $objvCloudConfig | Add-Member Note* vcdUsername ($vcdCredentials.UserName)
-    $vCloudConfigResponse = Invoke-vCAVAPIRequest -URI $ConfigVCDURI -Data (ConvertTo-JSON $objvCloudConfig) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion
+    $vCloudConfigResponse = Invoke-vCAVAPIRequest -URI $ConfigVCDURI -Data (ConvertTo-JSON $objvCloudConfig) -Method Post 
     $vCloudConfigResponse.JSONData
 }

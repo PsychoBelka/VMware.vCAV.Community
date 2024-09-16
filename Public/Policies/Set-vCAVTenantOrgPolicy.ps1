@@ -17,8 +17,8 @@ function Set-vCAVTenantOrgPolicy(){
     Will assign the vCloud Availability tenent policy with the name "TestPolicy" to the vCloud Organisation "TestOrg"
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-03-15
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     [CmdletBinding(DefaultParameterSetName="ById")]
@@ -42,6 +42,6 @@ function Set-vCAVTenantOrgPolicy(){
     }
     # Create the URI to the policy and perform a Patch
     $URI = $global:DefaultvCAVServer.ServiceURI + "policies/$(($objPolicy).id)/orgs/$OrgName"
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Patch -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Patch ).JSONData
     $RequestResponse
 }

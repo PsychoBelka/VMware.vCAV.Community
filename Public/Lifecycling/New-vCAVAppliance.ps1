@@ -91,8 +91,8 @@ function New-vCAVAppliance(){
     Deploys a new appliance to the connected vCenter Server by splatting the configuration in the hashtable ApplianceConfig. Deploys the appliance and configures the base networking.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-11
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     Param(

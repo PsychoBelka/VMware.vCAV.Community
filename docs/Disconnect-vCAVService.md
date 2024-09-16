@@ -35,8 +35,8 @@ Disconnects the currently configured session in the $global:DefaultvCAVServer gl
 ## OUTPUTS
 
 ## NOTES
-AUTHOR: Adrian Begg
-LASTEDIT: 2019-06-14
+AUTHOR: PsychoBelka (Original Adrian Begg)
+LASTEDIT: 2024-09-16
 VERSION: 2.0
 
 ## RELATED LINKS

@@ -26,8 +26,8 @@ function Get-vCAVSupportBundle(){
     Returns the details of the support bundle with the Id "1676f615-aa4b-4c16-ae59-ab8c8ec7f28b" on the currently connected vCloud Availability Service if it exists and downloads the buddle to the current working directory
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-03-15
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     [CmdletBinding(DefaultParameterSetName="Default")]
@@ -38,7 +38,7 @@ function Get-vCAVSupportBundle(){
             [bool]$Download = $false
     )
     [string] $URI = $global:DefaultvCAVServer.ServiceURI + "diagnostics/bundles"
-    $SupportBundles = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $SupportBundles = (Invoke-vCAVAPIRequest -URI $URI -Method Get).JSONData
     if(!($PSBoundParameters.ContainsKey('BundleId'))){
         $SupportBundles
     } else {
@@ -46,9 +46,9 @@ function Get-vCAVSupportBundle(){
         if($Download -and ($null -ne $SupportBundles)){
             # First generate a one-time cookie for the download of the support bundle
             [string] $SupportBundleURI = $global:DefaultvCAVServer.ServiceURI + "diagnostics/bundles/cookie/$($SupportBundles.id)"
-            $DownloadCookie = (Invoke-vCAVAPIRequest -URI $SupportBundleURI -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData.cookie
+            $DownloadCookie = (Invoke-vCAVAPIRequest -URI $SupportBundleURI -Method Post).JSONData.cookie
             $SupportBundleURI += "?&cookie=$DownloadCookie"
-            $SupportBundleOutput = (Invoke-vCAVAPIRequest -URI $SupportBundleURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion)
+            $SupportBundleOutput = (Invoke-vCAVAPIRequest -URI $SupportBundleURI -Method Get)
             # Generate the Filename after the download
             $OutputFileName = $SupportBundleOutput.Headers.'Content-Disposition'.Trim("inline; filename=").Replace("""","")
             $OutputFileName = "$($pwd.Path)\" + $OutputFileName

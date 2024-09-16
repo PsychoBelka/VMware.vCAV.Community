@@ -28,8 +28,8 @@ function Get-vCAVProviderVDCs(){
     Returns the Provider Virtual Datacenter with the Provder VDC Id "2241c7fe-7319-4d89-bf0e-3eb647474416" in the local site.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-17
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     [CmdletBinding(DefaultParameterSetName="Default")]
@@ -47,7 +47,7 @@ function Get-vCAVProviderVDCs(){
     }
     # API Endpoint for Provider VDCs
     $URI = $global:DefaultvCAVServer.ServiceURI + "inventory/provider-vdcs"
-    $colProviderVDC = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+    $colProviderVDC = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
 
     # Finally filter on the Provider VDC Name if required
     if($PSBoundParameters.ContainsKey("Name")){

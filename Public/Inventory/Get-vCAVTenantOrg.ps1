@@ -22,8 +22,8 @@ function Get-vCAVTenantOrg(){
     Returns the object for the vOrgs "TestOrg" in the  site "PigeonNuggets-SiteA" if it exists.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-19
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 2.0
     #>
     Param(
@@ -40,13 +40,13 @@ function Get-vCAVTenantOrg(){
     }
     $URI = $global:DefaultvCAVServer.ServiceURI + "inventory/orgs"
     # Now make the first call to the API and add the items to a collection
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
     $colOrganisations = $RequestResponse.items
     # Check if more then 100 results were returned and continue to query until all items have been returned
     [int] $OffsetPosition = 100 # Set the starting offset to 100 results
     while($OffsetPosition -lt $RequestResponse.total){
         $QueryFilters.offset = $OffsetPosition
-        $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+        $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
         $colOrganisations += $RequestResponse.items
         $OffsetPosition += 100
     }

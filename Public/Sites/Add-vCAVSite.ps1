@@ -30,8 +30,8 @@ function Add-vCAVSite(){
     Adds a new remote site to the installation "Brisbane" using the API endpoint "https://brisbane.example.com:8048" and the Remote Root Password of Password!123
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-07-31
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 3.0
     #>
 
@@ -75,7 +75,7 @@ function Add-vCAVSite(){
         [string] $ConfigURI = $global:DefaultvCAVServer.ServiceURI + "sites"
         # Get the Thumbprint of the Remote Certificate
         [string] $RemoteServiceCertURI = $global:DefaultvCAVServer.ServiceURI + "config/remote-certificate?url=$APIURL"
-        $RemoteCertificate = (Invoke-vCAVAPIRequest -URI $RemoteServiceCertURI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+        $RemoteCertificate = (Invoke-vCAVAPIRequest -URI $RemoteServiceCertURI -Method Get ).JSONData
         $objSite | Add-Member Note* site $SiteName
         if(!([string]::IsNullOrEmpty($SiteDescription))){
             $objSite | Add-Member Note* description $SiteDescription
@@ -85,6 +85,6 @@ function Add-vCAVSite(){
         $objSite | Add-Member Note* remoteRootPassword $ReplicatorPasswordPlain
 
     }
-    $objSiteResponse = Invoke-vCAVAPIRequest -URI $ConfigURI -Data (ConvertTo-JSON $objSite) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion
+    $objSiteResponse = Invoke-vCAVAPIRequest -URI $ConfigURI -Data (ConvertTo-JSON $objSite) -Method Post 
     $objSiteResponse.JSONData
 }

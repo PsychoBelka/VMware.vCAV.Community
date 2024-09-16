@@ -11,8 +11,8 @@ function Get-vCAVCertificate(){
     Returns the currently installed certificate on the currently connected vCloud Availability Service.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-02-21
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     # Validate the environment is ready based on the input parameters
@@ -20,6 +20,6 @@ function Get-vCAVCertificate(){
         Break
     }
     $URI = $global:DefaultvCAVServer.ServiceURI + "config/certificate"
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get).JSONData
     $RequestResponse.certificate
 }

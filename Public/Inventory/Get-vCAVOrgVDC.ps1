@@ -28,8 +28,8 @@ function Get-vCAVOrgVDC(){
     Returns the vCloud Org VDC with the Id "49c2a2f1-721f-4b29-88bc-333be435102a" in Site "PigeonNuggets-SiteA" if it exists.
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-06-24
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 1.0
     #>
     [CmdletBinding(DefaultParameterSetName="Default")]
@@ -53,13 +53,13 @@ function Get-vCAVOrgVDC(){
         $QueryFilters.Add("name", $Name)
     }
     # Make the API call for the OrgVDC inventory
-    $colOrgVDCQueryResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+    $colOrgVDCQueryResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
     $colOrgVDC = $colOrgVDCQueryResponse.items
     # Check if more then 100 results were returned and continue to query until all items have been returned
     [int] $OffsetPosition = 100 # Set the starting offset to 100 results
     while($OffsetPosition -lt $colOrgVDCQueryResponse.total){
         $QueryFilters.offset = $OffsetPosition
-        $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get -APIVersion $DefaultvCAVServer.DefaultAPIVersion -QueryParameters $QueryFilters).JSONData
+        $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Method Get  -QueryParameters $QueryFilters).JSONData
         $colOrgVDC += $RequestResponse.items
         $OffsetPosition += 100
     }

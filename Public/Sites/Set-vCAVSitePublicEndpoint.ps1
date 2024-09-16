@@ -17,8 +17,8 @@ function Set-vCAVSitePublicEndpoint(){
     Sets the Public API Endpoint for the current vCloud installation to https://vcav.pigeonnuggets.com and the Management (internal) API to https://vcav.pigeonnuggets.com:8047
 
     .NOTES
-    AUTHOR: Adrian Begg
-	LASTEDIT: 2019-09-16
+    AUTHOR: PsychoBelka (Original Adrian Begg)
+	LASTEDIT: 2024-09-16
 	VERSION: 3.0
     #>
     Param(
@@ -38,6 +38,6 @@ function Set-vCAVSitePublicEndpoint(){
     $objSiteConfig | Add-Member Note* apiPublicPort $PublicAPIURI.Port
     $objSiteConfig | Add-Member Note* mgmtPublicAddress $InternalAPIURI.Host
     $objSiteConfig | Add-Member Note* mgmtPublicPort $InternalAPIURI.Port
-    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objSiteConfig) -Method Post -APIVersion $DefaultvCAVServer.DefaultAPIVersion).JSONData
+    $RequestResponse = (Invoke-vCAVAPIRequest -URI $URI -Data (ConvertTo-JSON $objSiteConfig) -Method Post ).JSONData
     $RequestResponse
 }
